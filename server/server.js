@@ -128,6 +128,24 @@ app.delete("/delete-todos/:id", async (req, res) => {
   }
 });
 
+app.post("/admin-login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (
+    username === "admin" &&
+    password === "123456"
+  ) {
+    return res.json({
+      success: true,
+      message: "Login successful",
+    });
+  }
+
+  res.status(401).json({
+    success: false,
+    message: "Invalid credentials",
+  });
+});
 // ─── 404 fallback ──────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });

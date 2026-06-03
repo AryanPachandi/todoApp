@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const API = "http://localhost:3000";
+const API = "https://todoapp-2qrt.onrender.com";
 
 const style = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
