@@ -9,9 +9,20 @@ const SECRET_KEY = "my_super_secret_key";
 
 const app = express();
 app.use(express.json());
+const allowedOrigins = [
+  "https://todo-app-self-psi-16.vercel.app",
+  "https://todo-bba0jiwey-aryan-pachandis-projects.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "https://todo-app-self-psi-16.vercel.app",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
