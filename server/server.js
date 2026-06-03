@@ -216,6 +216,17 @@ app.post("/admin-login", (req, res) => {
     });
   }
 });
+app.get("/admin-status", (req, res) => {
+  if (req.cookies.admin) {
+    return res.json({
+      registered: true,
+    });
+  }
+
+  res.json({
+    registered: false,
+  });
+});
 // ─── 404 fallback ──────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
