@@ -1,6 +1,7 @@
 const express = require("express");
 const cors    = require("cors");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const cookieParser = require("cookie-parser");
 const CryptoJS = require("crypto-js");
@@ -29,7 +30,7 @@ app.use(
 app.use(cookieParser());
 
 // ─── MongoDB connection ────────────────────────────────────────────
-const MONGO_URI = "mongodb+srv://pachandiaryan:aryanpach@aryanpachandi.bew7r.mongodb.net/todo";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
   .connect(MONGO_URI)
