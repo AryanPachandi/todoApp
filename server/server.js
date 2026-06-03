@@ -1,6 +1,7 @@
 const express = require("express");
 const cors    = require("cors");
 const mongoose = require("mongoose");
+import fs from "fs";
 
 const app = express();
 app.use(express.json());
@@ -128,23 +129,87 @@ app.delete("/delete-todos/:id", async (req, res) => {
   }
 });
 
-app.post("/admin-login", (req, res) => {
-  const { username, password } = req.body;
 
-  if (
-    username === "admin" &&
-    password === "123456"
-  ) {
-    return res.json({
+app.post("/admin-register", (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Username and password required",
+      });
+    }
+
+    const encrypted = CryptoJS.AES.encrypt(
+      JSON.stringify({
+        username,
+        password,
+      }),
+      SECRET_KEY
+    ).toString();
+
+    res.cookie("admin", encrypted, {
+      httpOnly: true,
+      secure: false, // true in production with HTTPS
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.json({
       success: true,
-      message: "Login successful",
+      message: "Admin registered successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
     });
   }
+});
 
-  res.status(401).json({
-    success: false,
-    message: "Invalid credentials",
-  });
+app.post("/admin-login", (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const encrypted = req.cookies.admin;
+
+    if (!encrypted) {
+      return res.status(404).json({
+        success: false,
+        message: "No admin registered",
+      });
+    }
+
+    const bytes = CryptoJS.AES.decrypt(
+      encrypted,
+      SECRET_KEY
+    );
+
+    const admin = JSON.parse(
+      bytes.toString(CryptoJS.enc.Utf8)
+    );
+
+    if (
+      admin.username === username &&
+      admin.password === password
+    ) {
+      return res.json({
+        success: true,
+        message: "Login successful",
+      });
+    }
+
+    res.status(401).json({
+      success: false,
+      message: "Invalid credentials",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
 });
 // ─── 404 fallback ──────────────────────────────────────────────────
 app.use((req, res) => {
