@@ -1,7 +1,7 @@
 const express = require("express");
 const cors    = require("cors");
 const mongoose = require("mongoose");
-import fs from "fs";
+
 const cookieParser = require("cookie-parser");
 const CryptoJS = require("crypto-js");
 
