@@ -158,8 +158,8 @@ app.post("/admin-register", (req, res) => {
 
     res.cookie("admin", encrypted, {
       httpOnly: true,
-      secure: false, // true in production with HTTPS
-      sameSite: "strict",
+      secure: true, // true in production with HTTPS
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
