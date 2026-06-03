@@ -9,9 +9,12 @@ const SECRET_KEY = "my_super_secret_key";
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: "*"
-}));
+app.use(
+  cors({
+    origin: "https://todo-app-self-psi-16.vercel.app",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 // ─── MongoDB connection ────────────────────────────────────────────
