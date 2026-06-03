@@ -2,10 +2,15 @@ const express = require("express");
 const cors    = require("cors");
 const mongoose = require("mongoose");
 import fs from "fs";
+const cookieParser = require("cookie-parser");
+const CryptoJS = require("crypto-js");
+
+const SECRET_KEY = "my_super_secret_key";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 // ─── MongoDB connection ────────────────────────────────────────────
 const MONGO_URI = "mongodb+srv://pachandiaryan:aryanpach@aryanpachandi.bew7r.mongodb.net/todo";
