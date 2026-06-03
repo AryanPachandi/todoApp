@@ -10,8 +10,11 @@ export default function Login({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`${API}/admin-login`, {
+  const res = await fetch(
+    "https://todoapp-2qrt.onrender.com/admin-register",
+    {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -19,7 +22,13 @@ export default function Login({ onLogin }) {
         username,
         password,
       }),
-    });
+    }
+  );
+
+  const data = await response.json();
+
+  console.log(data);
+};
 
     const data = await res.json();
 
